@@ -57,6 +57,7 @@ void yyerror(char *);
 	float floatnum;
 }
 
+%token ADD SUB MUL DIV LT GT LE GE EQ NE
 %token <op> UNOP ADDIOP MULTOP RELAOP EQLTOP
 %token <id> ID <intnum> INTNUM <floatnum> FLOATNUM
 %token CLASS PRIVATE PUBLIC
@@ -86,7 +87,7 @@ void yyerror(char *);
 %type <ptr_stm> Stmt
 %type <ptr_eps> ExprStmt
 %type <ptr_ass> AssignStmt
-%type <ptr_rts> RetStmt
+%type <ptr_rst> RetStmt
 %type <ptr_whs> WhileStmt
 %type <ptr_dos> DoStmt
 %type <ptr_frs> ForStmt
@@ -274,22 +275,22 @@ Arg: Expr		{ $$ = alloc_Arg($1, NULL); }
 Unop: '-' Expr	{ $$ = alloc_UnOp(eNegative, $2); }
 ;
 
-AddiOp: Expr '+' Expr	{ $$ = alloc_AddiOp($1, ePlus, $3); }
-|	Expr '-' Expr	{ $$ = alloc_AddiOp($1, eMinus, $3); }
+AddiOp: Expr ADD Expr	{ $$ = alloc_AddiOp($1, ePlus, $3); }
+|	Expr SUB Expr	{ $$ = alloc_AddiOp($1, eMinus, $3); }
 ;
 
-Multop: Expr '*' Expr	{ $$ = alloc_MultOp($1, eMul, $3); }
-|	Expr '/' Expr	{ $$ = alloc_MultOp($1, eDiv, $3); }
+Multop: Expr MUL Expr	{ $$ = alloc_MultOp($1, eMul, $3); }
+|	Expr DIV Expr	{ $$ = alloc_MultOp($1, eDiv, $3); }
 ;
 
-Relaop: Expr '<' Expr	{ $$ = alloc_RelaOp($1, eLT, $3); }
-|	Expr '>' Expr	{ $$ = alloc_RelaOp($1, eGT, $3); }
-|	Expr '<=' Expr	{ $$ = alloc_RelaOp($1, eLE, $3); }
-|	Expr '>=' Expr	{ $$ = alloc_RelaOp($1, eGE, $3); }
+Relaop: Expr LT Expr	{ $$ = alloc_RelaOp($1, eLT, $3); }
+|	Expr GT Expr	{ $$ = alloc_RelaOp($1, eGT, $3); }
+|	Expr LE Expr	{ $$ = alloc_RelaOp($1, eLE, $3); }
+|	Expr GE Expr	{ $$ = alloc_RelaOp($1, eGE, $3); }
 ;
 
-Eqltop: Expr '==' Expr	{ $$ = alloc_EqltOp($1, EQ, $3); }
-|	Expr '!=' Expr	{ $$ = alloc_EqltOp($1, NE, $3); }
+Eqltop: Expr EQ Expr	{ $$ = alloc_EqltOp($1, EQ, $3); }
+|	Expr NE Expr	{ $$ = alloc_EqltOp($1, NE, $3); }
 ;
 
 %%

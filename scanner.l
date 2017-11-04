@@ -16,6 +16,17 @@ floatnum	[0-9]+.[0-9]+
 
 %%
 
+'+'		{ return ADD; }
+'-'		{ return SUB; }
+'*'		{ return MUL; }
+'/'		{ return DIV; }
+'<'		{ return LT; }
+'>'		{ return GT; }
+'<='		{ return LE; }
+'>='		{ return GE; }
+'=='		{ return EQ; }
+'!='		{ return NE; }
+
 {unop}	{ yylval.op = yytext[0]; return UNOP; }
 {addiop}	{ yylval.op = yytext[0]; return ADDIOP; }
 {multop}	{ yylval.op = yytext[0]; return MULTOP; }
